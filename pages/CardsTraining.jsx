@@ -17,20 +17,20 @@ const CardsTraining = () => {
         <>
         
 
-        <div className="d-flex gap-3">
+        <div className="d-flex flex-wrap">
             {schede.map((scheda) => (
-                <Link to={'/' + scheda.id} key={scheda.id} className="col-4">
-                    <div className="card">
-                        <p className="card-title">{scheda.nome}</p>
-                        <ul className="card-list">
+                <Link to={'/' + scheda.id} key={scheda.id} className="col-4 text-decoration-none W-50">
+                    
+                        <ul className="list-group">
+                        <h5 className="card-title">{scheda.nome}</h5>
                             {scheda.esercizi.map((esercizio, index) => (
-                                <li key={index} className="card-item">
+                                <li key={index} className="list-group-item list-group-item-action">
                                     <p>{esercizio.nome}</p>
                                     <p>{esercizio.tempo}s</p>
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    
                 </Link>
             ))}
         </div>

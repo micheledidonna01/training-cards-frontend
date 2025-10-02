@@ -7,6 +7,7 @@ const Esercizio = () => {
     const { id, idEsercizio } = useParams();
     const [esercizio, setEsercizio] = useState(null);
     const [timer, setTimer] = useState(0);
+    const [pauseTimer, setPauseTimer] = useState(10);
 
     const btnHomeRef = useRef(null);
     const btnRestartRef = useRef(null);
@@ -35,9 +36,9 @@ const Esercizio = () => {
     // Avvia il timer e gestisce la visibilità dei bottoni
     useEffect(() => {
         if (esercizio?.tempo) {
-            const tempo = parseInt(esercizio.tempo);
+            const tempo = parseInt(esercizio.tempo);    
             setTimer(tempo);
-
+            setPauseTimer(10);
             // Nascondi bottoni
             if (btnHomeRef.current) btnHomeRef.current.style.display = "none";
             if (btnRestartRef.current) btnRestartRef.current.style.display = "none";
@@ -54,7 +55,24 @@ const Esercizio = () => {
 
     // Countdown timer
     useEffect(() => {
-        if (timer <= 0) return;
+        if (timer <= 0){
+            const interval = setInterval(() => {
+                setPauseTimer(prev => {
+                    if (prev <= 1) {
+                        clearInterval(interval);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(interval);
+        };
+
+    }, [timer]);
+
+
+    useEffect(() => {
+        if (pauseTimer <= 0) return;
 
         const interval = setInterval(() => {
             setTimer(prev => {
@@ -67,7 +85,7 @@ const Esercizio = () => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [pauseTimer]);
 
     // Passa all'esercizio successivo
     const nextExercise = () => {
@@ -91,9 +109,19 @@ const Esercizio = () => {
                 </div>
             </div>
 
+            {timer === 0 && pauseTimer > 0 && (                
+                <div className="d-flex justify-content-end">
+                <p>Riposati per {pauseTimer} secondi</p>
+                <div className="spinner-border" role="status">
+                    {/* <span className="sr-only">Loading...</span> */}
+                    <span >Loading...</span>
+                </div>
+            </div>
+            )}
+
             <div className="row justify-content-end align-items-end gap-2 mt-4 px-3">
-                <button className="btn btn-primary" onClick={nextExercise} disabled={timer > 0 || esercizi.length === esercizio?.id ? true : false}>
-                    {timer <= 0 ? "Avanti" : timer}
+                <button className="btn btn-primary" onClick={nextExercise} disabled={pauseTimer > 0 || esercizi.length === esercizio?.id ? true : false}>
+                    {timer <= 0  ? "Avanti" : timer}
                 </button>
 
                 {esercizi.length === esercizio?.id && (
