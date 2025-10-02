@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react"
-
+import { useContext, useEffect, useState } from "react"
+import { Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { SchedeContext } from "../context/schedeContext";
 const CardsTraining = () => {
 
-    const [schede, setSchede] = useState([]);
-
-    const getSchede = async () => {
-        try{
-            const promise = await fetch('http://127.0.0.1:3100/api/schede');
-            const data = await promise.json();
-            if (!promise.ok) {
-                throw new Error(promise.status + ' ' + promise.statusText)
-            }
-            setSchede(data);
-            console.log(data);
-            return data;
-        }catch(error){
-            console.log(error);
-            return null;
-        }
-    }
-
+    const {
+        getSchede,
+        schede,
+    } = useContext(SchedeContext);
   
     useEffect(() => {
         getSchede();
@@ -27,19 +15,26 @@ const CardsTraining = () => {
 
     return (
         <>
+        
+
+        <div className="d-flex gap-3">
             {schede.map((scheda) => (
-                <div key={scheda.id}>
-                    <h1>{scheda.nome}</h1>
-                    <ul>
-                        {scheda.esercizi.map((esercizio, index) => (
-                            <li key={index}>
-                                <h2>{esercizio.nome}</h2>
-                                <p>{esercizio.tempo}s</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <Link to={'/' + scheda.id} key={scheda.id} className="col-4">
+                    <div className="card">
+                        <p className="card-title">{scheda.nome}</p>
+                        <ul className="card-list">
+                            {scheda.esercizi.map((esercizio, index) => (
+                                <li key={index} className="card-item">
+                                    <p>{esercizio.nome}</p>
+                                    <p>{esercizio.tempo}s</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </Link>
             ))}
+        </div>
+       
         </>
     )
 }
