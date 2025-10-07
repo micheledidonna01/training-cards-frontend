@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
     return <>
-        <div className="position-fixed top-0 w-100 d-flex bg-dark p-3">
+        <header className="position-fixed top-0 w-100 d-flex p-3 bg-dark justify-content-between align-items-center">
             <Link to={'/'} className="text-light text-decoration-none"><h4>Training Cards</h4></Link>
-        </div>
+            <Link to={'/create-training'} className="text-light text-decoration-none"><h5>New Training</h5></Link>
+        </header>
     </>
 }
 

@@ -5,6 +5,7 @@ import CardTrainingPage from "../pages/CardTrainingPage";
 import Esercizio from "../pages/Esercizio";
 import { SchedeContextProvider } from "../context/schedeContext";
 import Esercizi from "../pages/Esercizi";
+import CardCreateTraining from "../pages/CardCreateTraining";
 function App() {
 
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DefaultLayout />} >
             <Route index element={<CardsTraining />} />
+            <Route path="/create-training" element={<CardCreateTraining />} />
             <Route path=":id" element={<CardTrainingPage />} />
             <Route path=":id/esercizio" element={<Esercizi />} />
             <Route path=":id/esercizio/:idEsercizio" element={<Esercizio />} />

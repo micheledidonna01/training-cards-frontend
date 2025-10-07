@@ -36,7 +36,7 @@ const Esercizio = () => {
     // Avvia il timer e gestisce la visibilità dei bottoni
     useEffect(() => {
         if (esercizio?.tempo) {
-            const tempo = parseInt(esercizio.tempo);    
+            const tempo = parseInt(esercizio.tempo);
             setTimer(tempo);
             setPauseTimer(10);
             // Nascondi bottoni
@@ -55,7 +55,7 @@ const Esercizio = () => {
 
     // Countdown timer
     useEffect(() => {
-        if (timer <= 0){
+        if (timer <= 0) {
             const interval = setInterval(() => {
                 setPauseTimer(prev => {
                     if (prev <= 1) {
@@ -98,32 +98,32 @@ const Esercizio = () => {
 
     // JSX
     return (
-        <>
+        <>  
+        <div className="position-relative">
+
+            
             <div className="d-flex justify-content-center align-items-center h-100">
                 <div>
-                    <h1>Esercizio {esercizio?.id}</h1>
-                    <h2>{esercizio?.nome}</h2>
+                    <h1>{esercizio?.nome}<span className="text-danger"> {esercizio?.id}/{esercizi.length}</span></h1>
                     <p>{esercizio?.descrizione}</p>
-                    <img src={`http://127.0.0.1:3100/gif/${esercizio?.image}`} alt="manuvir" />
-
+                    <img src={`http://127.0.0.1:3100/gif/${esercizio?.image}`} alt="esercizio" />
                 </div>
             </div>
 
-            {timer === 0 && pauseTimer > 0 && (                
-                <div className="d-flex justify-content-end">
-                <p>Riposati per {pauseTimer} secondi</p>
-                <div className="spinner-border" role="status">
-                    {/* <span className="sr-only">Loading...</span> */}
-                    <span >Loading...</span>
+            {timer === 0 && pauseTimer > 0 && (
+                <div className="d-flex justify-content-end position-absolute end-0 top-0">
+                    <p>Riposati per {pauseTimer} secondi</p>
+                    <div className="spinner-border" role="status">
+                        {/* <span className="sr-only">Loading...</span> */}
+                        <span>{pauseTimer}</span>
+                    </div>
                 </div>
-            </div>
             )}
 
-            <div className="row justify-content-end align-items-end gap-2 mt-4 px-3">
+            <div className="row justify-content-end align-items-end mt-4 px-3 position-fixed start-0 end-0 bottom-0">
                 <button className="btn btn-primary" onClick={nextExercise} disabled={pauseTimer > 0 || esercizi.length === esercizio?.id ? true : false}>
-                    {timer <= 0  ? "Avanti" : timer}
+                    {timer <= 0 ? "Avanti" : timer}
                 </button>
-
                 {esercizi.length === esercizio?.id && (
                     <>
                         <button
@@ -144,7 +144,11 @@ const Esercizio = () => {
                         </button>
                     </>
                 )}
+
             </div>
+
+
+        </div>
         </>
     );
 };
