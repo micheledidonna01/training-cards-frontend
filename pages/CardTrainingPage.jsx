@@ -8,46 +8,27 @@ const CardTrainingPage = () => {
     const [modify, setModify] = useState(false);
     const { id } = useParams();
     const [scheda, setScheda] = useState();
+    const [numeroEs, setNumeroEs] = useState([]);
     const [modifyForm, setModifyForm] = useState({
         id: parseInt(id),
         nome: '',
-        esercizi: [
-            {
-                id: 1,
-                nome: '',
-                tempo: 0,
-                image: '',
-                descrizione: ''
-            },
-            {
-                id: 2,
-                nome: '',
-                tempo: 0,
-                image: '',
-                descrizione: ''
-            },
-            {
-                id: 3,
-                nome: '',
-                tempo: 0,
-                image: '',
-                descrizione: ''
-            },
-            {
-                id: 4,
-                nome: '',
-                tempo: 0,
-                image: '',
-                descrizione: ''
-            }
-        ]
+        esercizi: numeroEs?.map((es, index) => ({
+            id: index + 1,
+            nome: '',
+            tempo: 0,
+            image: '',
+            descrizione: ''
+        }))
     });
 
     const navigate = useNavigate();
 
     const {
-        setSchede
+        setSchede,
+        getSchede,
+        schede
     } = useContext(SchedeContext);
+
 
     const getScheda = async () => {
         try {
@@ -71,48 +52,70 @@ const CardTrainingPage = () => {
 
 
 
+    useEffect(() => {
+        if (scheda?.esercizi?.length) {
+            const arr = Array.from({ length: scheda.esercizi.length }, (_, index) => index);
+            setNumeroEs(arr);
+        }
+    }, [scheda]);
+
+    console.log(numeroEs);
+
+
 
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
 
         const finalScheda = {
             id: id,
             nome: modifyForm.nome.trim() !== '' ? modifyForm.nome.trim() : scheda?.nome,
-            esercizi: [
-                {
+            esercizi: numeroEs.map((es, index) => {
+                if ((numeroEs.length - 1) <= index) {
+                    if ((modifyForm.esercizi[index]?.nome && modifyForm.esercizi[index]?.tempo && modifyForm.esercizi[index]?.image && modifyForm.esercizi[index]?.descrizione) &&
+                        modifyForm.esercizi[index]?.nome.trim() !== '' ||
+                        modifyForm.esercizi[index]?.tempo !== 0 ||
+                        modifyForm.esercizi[index]?.image !== '' ||
+                        modifyForm.esercizi[index]?.descrizione !== ''
+                    ) {
+                        return {
+                            id: index + 1,
+                            nome: es.nome?.trim(),
+                            tempo: parseInt(es.tempo),
+                            image: es.image !== '',
+                            descrizione: es.descrizione?.trim()
+                        }
+                    } else {
+                        alert('Completa tutti i campi dei nuovi esercizi aggiunti');
+                        return;
 
-                    nome: modifyForm.esercizi[0].nome.trim() !== '' ? modifyForm.esercizi[0].nome.trim() : scheda?.esercizi[0]?.nome,
-                    tempo: parseInt(modifyForm.esercizi[0].tempo) !== 0 ? modifyForm.esercizi[0].tempo : scheda?.esercizi[0]?.tempo,
-                    image: modifyForm.esercizi[0].image !== '' ? modifyForm.esercizi[0].image : scheda?.esercizi[0]?.image,
-                    descrizione: modifyForm.esercizi[0].descrizione.trim() !== '' ? modifyForm.esercizi[0].descrizione.trim() : scheda?.esercizi[0]?.descrizione
-                },
-                {
+                    }
 
-                    nome: modifyForm.esercizi[1].nome.trim() !== '' ? modifyForm.esercizi[1].nome.trim() : scheda?.esercizi[1]?.nome,
-                    tempo: parseInt(modifyForm.esercizi[1].tempo) !== 0 ? modifyForm.esercizi[1].tempo : scheda?.esercizi[1]?.tempo,
-                    image: modifyForm.esercizi[1].image !== '' ? modifyForm.esercizi[1].image : scheda?.esercizi[1]?.image,
-                    descrizione: modifyForm.esercizi[1].descrizione.trim() !== '' ? modifyForm.esercizi[1].descrizione.trim() : scheda?.esercizi[1]?.descrizione
-                },
-                {
-
-                    nome: modifyForm.esercizi[2].nome.trim() !== '' ? modifyForm.esercizi[2].nome.trim() : scheda?.esercizi[2]?.nome,
-                    tempo: parseInt(modifyForm.esercizi[2].tempo) !== 0 ? modifyForm.esercizi[2].tempo : scheda?.esercizi[2]?.tempo,
-                    image: modifyForm.esercizi[2].image !== '' ? modifyForm.esercizi[2].image : scheda?.esercizi[2]?.image,
-                    descrizione: modifyForm.esercizi[2].descrizione.trim() !== '' ? modifyForm.esercizi[2].descrizione.trim() : scheda?.esercizi[2]?.descrizione
-                },
-                {
-
-                    nome: modifyForm.esercizi[3].nome.trim() !== '' ? modifyForm.esercizi[3].nome.trim() : scheda?.esercizi[3]?.nome,
-                    tempo: parseInt(modifyForm.esercizi[3]) !== 0 ? modifyForm.esercizi[3].tempo : scheda?.esercizi[3]?.tempo,
-                    image: modifyForm.esercizi[3].image !== '' ? modifyForm.esercizi[3].image : scheda?.esercizi[3]?.image,
-                    descrizione: modifyForm.esercizi[3].descrizione.trim() !== '' ? modifyForm.esercizi[3].descrizione.trim() : scheda?.esercizi[3]?.descrizione
                 }
-            ]
+                return {
+                    id: scheda?.esercizi[index]?.id ?? index + 1,
+                    nome: modifyForm.esercizi[index]?.nome?.trim() || scheda?.esercizi[index]?.nome,
+                    tempo: parseInt(modifyForm.esercizi[index]?.tempo) || scheda?.esercizi[index]?.tempo,
+                    image: modifyForm.esercizi[index]?.image || scheda?.esercizi[index]?.image,
+                    descrizione: modifyForm.esercizi[index]?.descrizione?.trim() || scheda?.esercizi[index]?.descrizione
+                }
+            })
         }
+
+        if (numeroEs.length > finalScheda.esercizi.length) {
+            const isAllCampiFull = finalScheda.esercizi.every(esercizio => esercizio.nome !== '' && esercizio.tempo !== 0 && esercizio.image !== '' && esercizio.descrizione !== '');
+            if (isAllCampiFull === false) {
+                alert('Completa tutti i campi dei nuovi esercizi');
+                return;
+            }
+        } else {
+            modifyScheda(finalScheda);
+            return;
+        }
+
         modifyScheda(finalScheda);
     }
+
 
     console.log(scheda);
     console.log(modifyForm);
@@ -177,30 +180,108 @@ const CardTrainingPage = () => {
         }
     };
 
+    const deleteScheda = async (id) => {
+        try {
+            await fetch('http://127.0.0.1:3100/api/schede/' + id, {
+                method: 'DELETE'
+            });
+            setSchede(schede.filter((scheda) => scheda.id !== id));
+            getSchede();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return <>
 
-        <h1 className="text-center mt-5">{scheda?.nome}</h1>
-        {scheda?.esercizi.map((esercizio) => (
-            <div key={esercizio.id} className="text-center pt-4 d-flex justify-content-center align-items-center gap-1">
-                <div>
-                    <h2>{esercizio.nome}</h2>
-                    <p>{esercizio.descrizione}</p>
-                    <img src={`http://127.0.0.1:3100/gif/${esercizio?.image}`} alt="esercizio" className="img-fluid" />
-                    <hr className="w-100 color-black" />
-                </div>
-
+        <div className="container py-5">
+            {/* Titolo scheda */}
+            <div className="text-center mb-5">
+                <h1 className="fw-bold display-5 text-primary">{scheda?.nome}</h1>
+                <p className="text-muted fs-5">
+                    💪 Preparati a completare {scheda?.esercizi?.length || 0} esercizi
+                </p>
             </div>
-        ))}
 
-        <div className="d-flex justify-content-center pt-5 flex-wrap">
-            <Link to={'/' + id + '/esercizio/' + scheda?.esercizi[0]?.id} className="btn btn-primary col-6" esercizi={scheda?.esercizi} style={{ display: modify ? 'none' : 'block' }}>Inizia</Link>
+            {/* Lista esercizi */}
+            <div className="row justify-content-center g-4">
+                {scheda?.esercizi.map((esercizio) => (
+                    <div
+                        key={esercizio.id}
+                        className="col-md-5 col-lg-4"
+                        style={{ minWidth: "280px" }}
+                    >
+                        <div className="card border-0 shadow-sm rounded-4 overflow-hidden h-100 hover-scale">
+                            <div className="card-body text-center p-4">
+                                <h4 className="fw-bold text-dark mb-3">{esercizio.nome}</h4>
+                                <p className="text-muted small mb-4">{esercizio.descrizione}</p>
+                                <img
+                                    src={`http://127.0.0.1:3100/gif/${esercizio?.immagine || esercizio?.image}`}
+                                    alt={esercizio.nome}
+                                    className="img-fluid rounded mb-3"
+                                    style={{
+                                        maxHeight: "220px",
+                                        objectFit: "cover",
+                                        borderRadius: "15px",
+                                    }}
+                                />
+                                <p className="fw-semibold text-primary">
+                                    ⏱️ {esercizio.tempo}s
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Pulsanti azione */}
+            <div className="d-flex justify-content-center flex-wrap gap-3 mt-5">
+                <Link
+                    to={`/${id}/esercizio/${scheda?.esercizi[0]?.id}`}
+                    className="btn btn-gradient-primary px-5 py-3 fs-5 fw-bold text-uppercase rounded-pill"
+                    style={{
+                        display: modify ? "none" : "block",
+                        letterSpacing: "1px",
+                    }}
+                >
+                    🚀 Inizia Allenamento
+                </Link>
+
+                <button
+                    onClick={() => setModify((prev) => !prev)}
+                    className="btn btn-outline-primary px-5 py-3 fs-5 fw-bold text-uppercase rounded-pill"
+                    style={{
+                        display: modify ? "none" : "block",
+                        letterSpacing: "1px",
+                    }}
+                >
+                    ✏️ Modifica Scheda
+                </button>
+
+                <button
+                    onClick={() => deleteScheda(id)}
+                    className="btn btn-outline-danger px-5 py-3 fs-5 fw-bold text-uppercase rounded-pill"
+                    style={{
+                        display: modify ? "none" : "block",
+                        letterSpacing: "1px",
+                    }}
+                >
+                    🗑️ Elimina Scheda
+                </button>
+            </div>
+
+            {/* Modal per modifica */}
+            <Modal
+                modifyForm={modifyForm}
+                modify={modify}
+                setModify={setModify}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                numeroEs={numeroEs}
+                setNumeroEs={setNumeroEs}
+            />
         </div>
 
-        <div className="d-flex justify-content-center pt-2 flex-wrap">
-            <button onClick={() => setModify(prev => !prev)} className="btn btn-primary col-6" style={{ display: modify ? 'none' : 'block' }} >Modifica</button>
-            <Modal modifyForm={modifyForm} modify={modify} setModify={setModify} handleSubmit={handleSubmit} handleChange={handleChange} />
-        </div>
     </>
 }
 

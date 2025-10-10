@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { useParams } from "react-router-dom";
+
 function useSchede() {
 
     const [schede, setSchede] = useState([]);
     const [esercizi, setEsercizi] = useState([]);
-    const {id} = useParams();
+   
+
     const getSchede = async () => {
         try{
             const promise = await fetch('http://127.0.0.1:3100/api/schede');
@@ -37,6 +38,7 @@ function useSchede() {
         }
     }
 
+    
     return {
         getSchede,
         schede,

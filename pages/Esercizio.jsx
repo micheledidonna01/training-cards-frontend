@@ -98,58 +98,78 @@ const Esercizio = () => {
 
     // JSX
     return (
-        <>  
-        <div className="position-relative">
+        <div className="exercise-container position-relative d-flex flex-column align-items-center justify-content-center text-center min-vh-100">
 
-            
-            <div className="d-flex justify-content-center align-items-center h-100">
-                <div>
-                    <h1>{esercizio?.nome}<span className="text-danger"> {esercizio?.id}/{esercizi.length}</span></h1>
-                    <p>{esercizio?.descrizione}</p>
-                    <img src={`http://127.0.0.1:3100/gif/${esercizio?.image}`} alt="esercizio" />
-                </div>
+            {/* Titolo esercizio */}
+            <div className="exercise-header mb-4">
+                <h1 className="fw-bold text-light mb-2">
+                    {esercizio?.nome}
+                    <span className="text-danger ms-2">
+                        {esercizio?.id}/{esercizi.length}
+                    </span>
+                </h1>
+                <p className="text-secondary fs-5">{esercizio?.descrizione}</p>
             </div>
 
-            {timer === 0 && pauseTimer > 0 && (
-                <div className="d-flex justify-content-end position-absolute end-0 top-0">
-                    <p>Riposati per {pauseTimer} secondi</p>
-                    <div className="spinner-border" role="status">
-                        {/* <span className="sr-only">Loading...</span> */}
-                        <span>{pauseTimer}</span>
-                    </div>
-                </div>
-            )}
+            {/* Immagine esercizio */}
+            <div className="exercise-image mb-4">
+                <img
+                    src={`http://127.0.0.1:3100/gif/${esercizio?.image}`}
+                    alt="esercizio"
+                    className="img-fluid rounded-4 shadow-lg"
+                    style={{ maxHeight: "350px", objectFit: "contain" }}
+                />
+            </div>
 
-            <div className="row justify-content-end align-items-end mt-4 px-3 position-fixed start-0 end-0 bottom-0">
-                <button className="btn btn-primary" onClick={nextExercise} disabled={pauseTimer > 0 || esercizi.length === esercizio?.id ? true : false}>
-                    {timer <= 0 ? "Avanti" : timer}
+            {/* Timer centrale */}
+            <div className="timer-section mt-3">
+                {timer > 0 ? (
+                    <div className="circle-timer border-info text-info">
+                        <h2 className="fw-bold mb-0">{timer}s</h2>
+                        <small className="text-uppercase">Allenati!</small>
+                    </div>
+                ) : pauseTimer > 0 ? (
+                    <div className="circle-timer border-warning text-warning">
+                        <h2 className="fw-bold mb-0">{pauseTimer}s</h2>
+                        <small className="text-uppercase">Riposati</small>
+                    </div>
+                ) : null}
+            </div>
+
+            {/* Pulsanti */}
+            <div className="button-group d-flex justify-content-center gap-3 flex-wrap mt-5 position-fixed bottom-0 pb-4">
+                <button
+                    className="btn btn-lg btn-outline-light px-4"
+                    onClick={nextExercise}
+                    disabled={pauseTimer > 0 || esercizi.length === esercizio?.id}
+                >
+                    {timer <= 0 ? "Avanti ▶️" : `${timer}s`}
                 </button>
+
                 {esercizi.length === esercizio?.id && (
                     <>
                         <button
-                            className="btn btn-secondary"
+                            className="btn btn-lg btn-outline-success px-4"
                             onClick={() => navigate('/')}
                             ref={btnHomeRef}
-                            style={{ display: 'none' }}
+                            style={{ display: "none" }}
                         >
-                            Home
+                            🏠 Home
                         </button>
                         <button
-                            className="btn btn-warning"
+                            className="btn btn-lg btn-outline-warning px-4"
                             onClick={() => navigate(`/${id}/esercizio/${esercizi[0].id}`)}
                             ref={btnRestartRef}
-                            style={{ display: 'none' }}
+                            style={{ display: "none" }}
                         >
-                            Ricomincia
+                            🔁 Ricomincia
                         </button>
                     </>
                 )}
-
             </div>
 
-
         </div>
-        </>
+
     );
 };
 

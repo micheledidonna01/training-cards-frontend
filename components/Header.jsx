@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 
 const Header = () => {
-    return <>
-        <header className="position-fixed top-0 w-100 d-flex p-3 bg-dark justify-content-between align-items-center">
-            <Link to={'/'} className="text-light text-decoration-none"><h4>Training Cards</h4></Link>
-            <Link to={'/create-training'} className="text-light text-decoration-none"><h5>New Training</h5></Link>
+    return (
+        <header className="header-gradient position-fixed top-0 w-100 d-flex px-5 py-3 justify-content-between align-items-center shadow-sm z-3">
+            <Link to="/" className="text-light text-decoration-none">
+                <h3 className="fw-bold m-0">🏋️ Training <span className="text-accent">Cards</span></h3>
+            </Link>
+
+            <Link
+                to="/create-training"
+                className="btn btn-gradient px-4 py-2 rounded-pill fw-semibold"
+            >
+                ➕ Nuova Scheda
+            </Link>
         </header>
-    </>
-}
+    );
+};
 
 export default Header;

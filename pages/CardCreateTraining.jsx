@@ -6,34 +6,17 @@ const CardCreateTraining = () => {
 
     const { setSchede, getSchede } = useContext(SchedeContext);
 
+    const [numeroEs, setNumeroEs] = useState([0, 1, 2, 3]);
+
     const [scheda, setScheda] = useState({
         nome: '',
-        esercizi: [
-            {
-                nome: '',
-                tempo: 0,
-                immagine: '',
-                descrizione: ''
-            },
-            {
-                nome: '',
-                tempo: 0,
-                immagine: '',
-                descrizione: ''
-            },
-            {
-                nome: '',
-                tempo: 0,
-                immagine: '',
-                descrizione: ''
-            },
-            {
-                nome: '',
-                tempo: 0,
-                immagine: '',
-                descrizione: ''
-            }
-        ]
+        esercizi: numeroEs.map((index) => ({
+            id: index + 1,
+            nome: '',
+            tempo: 0,
+            immagine: '',
+            descrizione: ''
+        }))
     });
 
     const handleChange = (e) => {
@@ -71,29 +54,29 @@ const CardCreateTraining = () => {
     };
 
 
-    const addScheda = async() => {
-        try{
+    const addScheda = async () => {
+        try {
 
-        
-        const promise = fetch('http://127.0.0.1:3100/api/schede', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(scheda)
-        })
 
-        const data =  await promise.json();
-        if (!promise.ok) {
-            throw new Error(promise.status + ' ' + promise.statusText)
+            const promise = fetch('http://127.0.0.1:3100/api/schede', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(scheda)
+            })
+
+            const data = await promise.json();
+            if (!promise.ok) {
+                throw new Error(promise.status + ' ' + promise.statusText)
+            }
+
+            setSchede(prev => [...prev, scheda]);
+            return data;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
-
-        setSchede(prev => [...prev, scheda]);
-        return data; 
-    }catch(error){
-        console.log(error);
-        return null;
-    }
 
         // setScheda({
         //     ...scheda,
@@ -112,52 +95,89 @@ const CardCreateTraining = () => {
 
     return (
         <>
-            <div className="container p-3">
-                <form className="d-flex flex-wrap">
-                    <div className=" col-12">
-                        <label htmlFor="name" className="form-label">Nome scheda</label>
-                        <input type="text" className="form-control" name="name" value={scheda.nome} onChange={handleChange} />
-                    </div>
+            <div className="container py-5 my-5">
+                <div className="form-container mx-auto p-4 rounded-4 shadow-lg bg-white">
+                    <h2 className="text-center mb-4 fw-bold text-primary">
+                        ✨ Crea una nuova scheda di allenamento
+                    </h2>
 
+                    <form className="d-flex flex-column align-items-center" onSubmit={addScheda}>
+                        <div className="col-10 mb-4">
+                            <label htmlFor="name" className="form-label fw-semibold">Nome scheda</label>
+                            <input
+                                type="text"
+                                className="form-control form-control-lg shadow-sm rounded-3"
+                                name="name"
+                                value={scheda.nome}
+                                onChange={handleChange}
+                                placeholder="Es. Full Body, Cardio Blast..."
+                            />
+                        </div>
 
-                    <div className="col-12 d-flex flex-wrap">
+                        <div className="col-12 d-flex flex-wrap justify-content-center gap-4">
+                            {numeroEs.map((num) => (
+                                <div key={num} className="card esercizio-card col-md-5 p-3 rounded-4 shadow-sm border-0 bg-light">
+                                    <h4 className="fw-bold text-primary mb-3">Esercizio {num + 1}</h4>
 
+                                    <div className="mb-3">
+                                        <label className="form-label">Nome esercizio</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name={`esercizio${num + 1}-nome`}
+                                            value={scheda.esercizi[num]?.nome}
+                                            onChange={handleChange}
+                                            placeholder="Es. Push-up"
+                                        />
+                                    </div>
 
+                                    <div className="mb-3">
+                                        <label className="form-label">Tempo (s)</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            name={`esercizio${num + 1}-tempo`}
+                                            value={scheda.esercizi[num]?.tempo}
+                                            onChange={handleChange}
+                                            placeholder="Es. 30"
+                                        />
+                                    </div>
 
-                        {[1, 2, 3, 4].map((num) => (
+                                    <div className="mb-3">
+                                        <label className="form-label">Immagine (nome file o URL)</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name={`esercizio${num + 1}-immagine`}
+                                            value={scheda.esercizi[num]?.immagine}
+                                            onChange={handleChange}
+                                            placeholder="es. pushup.gif"
+                                        />
+                                    </div>
 
-                            <div key={num}>
-                                <h4>Esercizio {num}</h4>
-                                <div className="col-12">
-                                    <label htmlFor={`esercizio${num}-nome`} className="form-label">Nome Esercizio {num}</label>
-                                    <input type="text" className="form-control" name={`esercizio${num}-nome`} value={scheda.esercizi[num - 1].nome} onChange={handleChange}/>
+                                    <div className="mb-2">
+                                        <label className="form-label">Descrizione</label>
+                                        <textarea
+                                            className="form-control"
+                                            name={`esercizio${num + 1}-descrizione`}
+                                            value={scheda.esercizi[num]?.descrizione}
+                                            onChange={handleChange}
+                                            rows="2"
+                                            placeholder="Descrivi brevemente l'esercizio..."
+                                        ></textarea>
+                                    </div>
                                 </div>
-
-                                <div className="col-12">
-                                    <label htmlFor={`esercizio${num}-tempo`} className="form-label">Tempo esercizio {num}</label>
-                                    <input type="number" className="form-control" name={`esercizio${num}-tempo`} value={scheda.esercizi[num - 1].tempo} onChange={handleChange} />
-                                </div>
-
-                                <div className="col-12">
-                                    <label htmlFor={`esercizio${num}-immagine`} className="form-label">Immagine esercizio {num}</label>
-
-                                    <input type="file" className="form-control" name={`esercizio${num}-immagine`} value={scheda.esercizi[num - 1].immagine} onChange={handleChange} />
-                                </div>
-
-                                <div className="col-12">
-                                    <label htmlFor={`esercizio${num}-descrizione`} className="form-label">Descrizione esercizio {num}</label>
-                                    <input type="text" className="form-control" name={`esercizio${num}-descrizione`} value={scheda.esercizi[num - 1].descrizione} onChange={handleChange} />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-
-                    <button onClick={addScheda}>Aggiungi scheda</button>
-
-                </form>
+                            ))}
+                        </div>
+                        <button type="button" className="btn btn-gradient mt-4 px-5 py-2 rounded-pill fw-semibold" onClick={() => setNumeroEs([...numeroEs, numeroEs.length])} disabled={numeroEs.length === 10}>{numeroEs.length === 10 ? '🚫 Massimo 10 esercizi' : '+'}</button>
+                        <button type="submit" className="btn btn-gradient mt-4 px-5 py-2 rounded-pill fw-semibold">
+                            💪 Crea scheda
+                        </button>
+                    </form>
+                </div>
             </div>
         </>
+
     )
 }
 

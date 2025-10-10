@@ -1,8 +1,4 @@
-main {
-  height: 80vh;
-  margin-top: 100px;
-  /* stesso valore dell'altezza dell'header */
-}
+
 
 footer {
   height: 10vh;
@@ -18,6 +14,10 @@ img {
   height: 400px;
 }
 
+main{
+  padding-top: 30px;
+}
+
 .scheda {
   /* background-image: url('./public/images.jpeg'); */
   background-color: rgba(33, 33, 33, 0.5);
@@ -27,8 +27,8 @@ img {
   color: #fff;
 }
 
-.scheda:hover{
-  border: 3px solid #000000;
+.scheda:hover {
+  border: 2px solid #555555;
 }
 
 .list-group-item {
@@ -39,4 +39,205 @@ img {
 .img-fluid {
   width: 100px;
   height: 100px;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.hover-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-gradient-primary {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  color: white !important;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+h1.display-5 {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Animazione di comparsa */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Header con gradiente */
+.bg-gradient {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+}
+
+/* Card esercizio */
+.esercizio-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #f8f9fa;
+}
+
+.esercizio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Pulsante principale */
+.btn-gradient-primary {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  color: white !important;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Header */
+.header-gradient {
+  background: linear-gradient(90deg, #0d6efd, #00bcd4);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.text-accent {
+  color: #ffd166;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  color: white !important;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+  background: linear-gradient(135deg, #0069d9, #00bcd4);
+}
+
+/* Form di creazione scheda */
+
+.form-container {
+  max-width: 1000px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.esercizio-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.esercizio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+input, textarea {
+  transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #007bff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25) !important;
+}
+
+/* Esercizio */
+
+.exercise-container {
+  background: linear-gradient(145deg, #0d1117, #1b1f25);
+  color: #fff;
+  overflow-x: hidden;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.exercise-header h1 {
+  font-size: 2.4rem;
+  letter-spacing: 0.5px;
+}
+
+.exercise-header p {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.circle-timer {
+  width: 150px;
+  height: 150px;
+  border: 6px solid;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto;
+  animation: pulse 1.3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.button-group button {
+  min-width: 140px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.button-group button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
