@@ -1,7 +1,7 @@
-const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs }) => {
+const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs, images }) => {
 
     console.log(numeroEs);
-
+    console.log(images);
     if (!modify) return null;
 
     return (
@@ -73,14 +73,27 @@ const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, nume
 
                                             <div className="mb-3">
                                                 <label className="form-label">Immagine (URL o nome file)</label>
-                                                <input
+                                                <select
+                                                    className="form-select"
+                                                    name={`esercizio${num + 1}-image`}
+                                                    value={modifyForm.esercizi[num]?.image || ''}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="">Nessuna immagine</option>
+                                                    {images.map((image, index) => (
+                                                        <option key={index} value={image}>
+                                                            {image}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                {/* <input
                                                     type="text"
                                                     className="form-control"
-                                                    name={`esercizio${num + 1}-immagine`}
+                                                    name={`esercizio${num + 1}-image`}
                                                     placeholder="es. squat.gif"
-                                                    value={modifyForm.esercizi[num]?.immagine || ''}
+                                                    value={modifyForm.esercizi[num]?.image || ''}
                                                     onChange={handleChange}
-                                                />
+                                                /> */}
                                             </div>
 
                                             <div>

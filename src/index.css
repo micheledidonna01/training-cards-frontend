@@ -19,7 +19,7 @@ main{
 }
 
 .scheda {
-  /* background-image: url('./public/images.jpeg'); */
+
   background-color: rgba(33, 33, 33, 0.5);
   background-repeat: no-repeat;
   background-size: cover;

@@ -55,6 +55,11 @@ const CardCreateTraining = () => {
 
 
     const addScheda = async () => {
+
+        if(scheda.nome === '' || scheda.esercizi.some(es => es.nome === '')){
+            alert('Completa tutti i campi');
+            return;
+        } 
         try {
 
 
