@@ -1,4 +1,4 @@
-const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs, images, setModifyForm, setDeletedExercises }) => {
+const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs, images, setModifyForm, setDeletedExercises, handleCancel }) => {
 
     console.log(numeroEs);
     console.log(images);
@@ -129,7 +129,7 @@ const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, nume
                                     </div>
                                 </div>
                             ))}
-                                <button type="button" onClick={() => setNumeroEs(prev => [...prev, numeroEs.length ])} className="btn btn-primary" disabled={numeroEs.length >= 10}>{numeroEs.length < 10 ? '+' : 'Limite raggiunto'}</button>
+                            <button type="button" className="btn btn-gradient mt-4 px-5 py-2 rounded-pill fw-semibold" onClick={() => setNumeroEs([...numeroEs, numeroEs.length])} disabled={numeroEs.length === 10}>{numeroEs.length === 10 ? '🚫 Massimo 10 esercizi' : '+'}</button>
                             
                         </div>
 
@@ -138,7 +138,7 @@ const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, nume
                             <button
                                 type="button"
                                 className="btn btn-outline-secondary px-4 py-2 rounded-pill"
-                                onClick={() => setModify(false)}
+                                onClick={handleCancel}
                             >
                                 ❌ Annulla
                             </button>

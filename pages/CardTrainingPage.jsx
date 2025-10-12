@@ -167,6 +167,37 @@ const CardTrainingPage = () => {
         }
     };
 
+    const handleCancel = () => {
+        if (!scheda) return;
+
+        // Ripristina la lista esercizi
+        const arr = Array.from(
+            { length: scheda.esercizi.length },
+            (_, index) => index
+        );
+        setNumeroEs(arr);
+
+        // Ripristina i dati del form
+        setModifyForm({
+            id: parseInt(id),
+            nome: scheda.nome || "",
+            esercizi: scheda.esercizi.map((es) => ({
+                id: es.id,
+                nome: es.nome,
+                tempo: es.tempo,
+                image: es.image || es.immagine || "",
+                descrizione: es.descrizione || "",
+            })),
+        });
+
+        // Svuota eventuali eliminazioni temporanee
+        setDeletedExercises([]);
+
+        // Chiudi il modal
+        setModify(false);
+    };
+
+
     const deleteScheda = async (id) => {
         try {
             await fetch("http://127.0.0.1:3100/api/schede/" + id, {
@@ -336,6 +367,7 @@ const CardTrainingPage = () => {
                     images={images}
                     deleteEsercizio={deleteEsercizio}
                     setDeletedExercises={setDeletedExercises}
+                    handleCancel={handleCancel}
                 />
             </div>
         </div>
