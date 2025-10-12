@@ -1,4 +1,4 @@
-const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs, images }) => {
+const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, numeroEs, setNumeroEs, images, setModifyForm, setDeletedExercises }) => {
 
     console.log(numeroEs);
     console.log(images);
@@ -43,9 +43,27 @@ const Modal = ({ modify, modifyForm, handleSubmit, setModify, handleChange, nume
                                 <div key={num} className="col-md-6">
                                     <div className="card esercizio-card h-100 border-0 shadow-sm rounded-4 p-3">
                                         <div className="card-body">
+                                            <div className="d-flex justify-content-between">
                                             <h5 className="fw-bold text-primary mb-3">
                                                 Esercizio {num + 1}
                                             </h5>
+                                                <button
+                                                    className="btn btn-outline-danger"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setNumeroEs((prev) => prev.filter((_, i) => i !== num));
+                                                        setModifyForm((prev) => ({
+                                                            ...prev,
+                                                            esercizi: prev.esercizi.filter((_, i) => i !== num),
+                                                        }));
+                                                        setDeletedExercises((prev) => [...prev, num + 1]); // salva l'id per eliminarlo dopo
+                                                    }}
+                                                >
+                                                    -
+                                                </button>
+
+
+                                            </div>
 
                                             <div className="mb-3">
                                                 <label className="form-label">Nome</label>

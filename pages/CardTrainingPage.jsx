@@ -10,6 +10,7 @@ const CardTrainingPage = () => {
     const [scheda, setScheda] = useState();
     const [numeroEs, setNumeroEs] = useState([]);
     const [images, setImages] = useState([]);
+    const [deletedExercises, setDeletedExercises] = useState([]);
     const [modifyForm, setModifyForm] = useState({
         id: parseInt(id),
         nome: "",
@@ -56,8 +57,12 @@ const CardTrainingPage = () => {
         }
     }, [scheda]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
+
+        for (const idEsercizio of deletedExercises) {
+            await deleteEsercizio(idEsercizio);
+        }
 
         const finalScheda = {
             id: id,
@@ -120,11 +125,15 @@ const CardTrainingPage = () => {
             );
 
             navigate("/");
+            setDeletedExercises([]);
             return data;
         } catch (error) {
             console.error("Errore durante la modifica:", error);
+            setDeletedExercises([]);
             return null;
         }
+
+        
     };
 
     const handleChange = (e) => {
@@ -166,6 +175,7 @@ const CardTrainingPage = () => {
             setSchede(schede.filter((scheda) => scheda.id !== id));
             getSchede();
             navigate("/");
+            
         } catch (error) {
             console.error(error);
         }
@@ -195,6 +205,26 @@ const CardTrainingPage = () => {
             return [];
         }
     };
+
+    const deleteEsercizio = async (idEsercizio) => {
+
+        try {
+            const promise = await fetch(`http://127.0.0.1:3100/api/schede/${id}/esercizi/${idEsercizio}`, {
+                method: "DELETE",
+            });
+            getScheda();
+            if (!promise.ok) {
+                throw new Error(promise.status + " " + promise.statusText);
+            }
+            const data = await promise.json();
+            setNumeroEs(prev => prev.filter(es => es.id !== idEsercizio));
+            return data; 
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    };
+
 
     return (
         <div
@@ -304,6 +334,8 @@ const CardTrainingPage = () => {
                     numeroEs={numeroEs}
                     setNumeroEs={setNumeroEs}
                     images={images}
+                    deleteEsercizio={deleteEsercizio}
+                    setDeletedExercises={setDeletedExercises}
                 />
             </div>
         </div>

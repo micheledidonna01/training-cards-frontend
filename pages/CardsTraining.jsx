@@ -71,19 +71,19 @@ const CardsTraining = () => {
                                             background: "linear-gradient(45deg, #007bff, #00d4ff)",
                                         }}
                                     >
-                                        <h5 className="mb-0 fw-bold">{scheda.nome}</h5>
+                                        <h5 className="mb-0 fw-bold text-dark">{scheda.nome}</h5>
                                         <span className="badge bg-white text-primary px-3 py-2 shadow-sm">
                                             {scheda.esercizi.length} esercizi
                                         </span>
                                     </div>
 
                                     {/* Body */}
+                                        <div className="card-body">
                                     <Link
                                         to={"/" + scheda.id}
                                         className="text-decoration-none text-dark"
                                         style={{ cursor: "pointer" }}
                                     >
-                                        <div className="card-body">
                                             <ul className="list-group list-group-flush">
                                                 {scheda.esercizi.slice(0, 3).map((esercizio, i) => (
                                                     <li
@@ -110,8 +110,8 @@ const CardsTraining = () => {
                                                     </li>
                                                 )}
                                             </ul>
-                                        </div>
                                     </Link>
+                                        </div>
 
                                     {/* Footer */}
                                     <div className="card-footer bg-light d-flex justify-content-center gap-3 py-3">
